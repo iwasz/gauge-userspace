@@ -123,7 +123,7 @@ void UsbService::transmit (Buffer const &buf)
 
         switch (ret) {
         case LIBUSB_ERROR_TIMEOUT:
-                throw Exception ("UsbService::transmitConfiguration : timeout reached when setting HUB to zero.");
+                throw Exception ("UsbService::transmitConfiguration : timeout reached.");
 
         case LIBUSB_ERROR_PIPE:
                 throw Exception ("UsbService::transmitConfiguration : the control request was not supported by the device.");
