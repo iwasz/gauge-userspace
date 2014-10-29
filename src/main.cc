@@ -1,12 +1,26 @@
+/****************************************************************************
+ *                                                                          *
+ *  Author : lukasz.iwaszkiewicz@gmail.com                                  *
+ *  ~~~~~~~~                                                                *
+ *  License : see COPYING file for details.                                 *
+ *  ~~~~~~~~~                                                               *
+ ****************************************************************************/
+
 #include <glibtop.h>
 #include <glibtop/mem.h>
 #include <glibtop/cpu.h>
 #include <glib.h>
 #include <unistd.h>
 #include <iostream>
+#include "UsbService.h"
+#include "Constants.h"
+
+/*--------------------------------------------------------------------------*/
 
 int main(int argc, char **argv)
 {
+        UsbServiceGuard <UsbService> guard;
+
         glibtop_mem buf;
 
         glibtop_init();
@@ -31,6 +45,13 @@ int main(int argc, char **argv)
                 if (lastTotal) {
                         double load = 100.0 * double (use) / std::max (double (total), 1.0);
                         std::cerr << load  << "%" << std::endl;
+
+                        uint16_t load16 = load * 100;
+
+                        UsbService::Buffer buffer (OUTPUT_DATA_SIZE);
+                        buffer[0] = (load16 & 0xff00) >> 8;
+                        buffer[0] = (load16 & 0x00ff);
+                        guard.service.transmit (buffer);
                 }
 
                 lastTotal = nowTotal;
