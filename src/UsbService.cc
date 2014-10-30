@@ -68,11 +68,11 @@ void UsbService::init ()
                 std::cerr << "Interface claimed OK" << std::endl;
         }
 
-        if ((rc = libusb_set_interface_alt_setting (impl->device, 2, 1)) != 0) {
-                throw Exception ("Error libusb_set_interface_alt_setting : " + std::string (libusb_error_name(rc)));
-        } else {
-                std::cerr << "libusb_set_interface_alt_setting OK" << std::endl;
-        }
+//        if ((rc = libusb_set_interface_alt_setting (impl->device, 2, 1)) != 0) {
+//                throw Exception ("Error libusb_set_interface_alt_setting : " + std::string (libusb_error_name(rc)));
+//        } else {
+//                std::cerr << "libusb_set_interface_alt_setting OK" << std::endl;
+//        }
 }
 
 /*--------------------------------------------------------------------------*/
@@ -115,7 +115,7 @@ void UsbService::transmit (Buffer const &buf)
                         const_cast <uint8_t *> (&*buf.begin ()),
                         buf.size (),
                         &transferred,
-                        500);
+                        100);
 
         if (ret >= 0) {
                 return;

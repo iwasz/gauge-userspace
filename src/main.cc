@@ -25,12 +25,14 @@ int main(int argc, char **argv)
 
         glibtop_init();
 
-        g_print("%lx\n", glibtop_global_server->features);
+//        g_print("%lx\n", glibtop_global_server->features);
 
         glibtop_get_mem(&buf);
 
         guint64 lastTotal = 0;
         guint64 lastUse = 0;
+
+        usleep (1000000);
 
         while (1) {
                 glibtop_cpu cpu;
@@ -49,15 +51,17 @@ int main(int argc, char **argv)
                         uint16_t load16 = load * 100;
 
                         UsbService::Buffer buffer (OUTPUT_DATA_SIZE);
-                        buffer[0] = (load16 & 0xff00) >> 8;
-                        buffer[0] = (load16 & 0x00ff);
+                        buffer[0] = 0x3f;
+                        buffer[1] = 2;
+                        buffer[2] = (load16 & 0xff00) >> 8;
+                        buffer[3] = (load16 & 0x00ff);
                         guard.service.transmit (buffer);
                 }
 
                 lastTotal = nowTotal;
                 lastUse = nowUse;
 
-                usleep (100000);
+                usleep (1000000);
         }
 
         glibtop_close();
