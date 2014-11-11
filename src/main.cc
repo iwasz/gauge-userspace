@@ -40,7 +40,7 @@ int main(int argc, char **argv)
                 guint64 use = nowUse - lastUse;
 
                 if (lastTotal) {
-                        double load = 100.0 * double (use) / std::max (double (total), 1.0);
+                        double load = 51.2 * double (use) / std::max (double (total), 1.0);
                         std::cerr << load  << "%" << std::endl;
 
                         uint16_t load16 = load * 100;
