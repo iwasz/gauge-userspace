@@ -40,10 +40,10 @@ int main(int argc, char **argv)
                 guint64 use = nowUse - lastUse;
 
                 if (lastTotal) {
-                        double load = 51.2 * double (use) / std::max (double (total), 1.0);
-                        std::cerr << load  << "%" << std::endl;
+                        double load = double (use) / std::max (double (total), 1.0);
+                        std::cerr << 100.0 * load  << "%" << std::endl;
 
-                        uint16_t load16 = load * 100;
+                        uint16_t load16 = load * TOTAL_USTEPS;
 
                         UsbService::Buffer buffer (OUTPUT_DATA_SIZE);
                         buffer[0] = (load16 & 0xff00) >> 8;
@@ -54,7 +54,9 @@ int main(int argc, char **argv)
                 lastTotal = nowTotal;
                 lastUse = nowUse;
 
-                usleep (1000000);
+//                usleep (40000); // 40ms = 25fps
+                usleep (1000000 / 5); // 200ms
+//                usleep (1000000); // 1 s
         }
 
         glibtop_close();

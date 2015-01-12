@@ -115,7 +115,7 @@ void UsbService::transmit (Buffer const &buf)
                         const_cast <uint8_t *> (&*buf.begin ()),
                         buf.size (),
                         &transferred,
-                        100);
+                        1000);
 
         if (ret >= 0) {
                 return;
